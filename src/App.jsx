@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useEffect, useState} from "react";
+import "./App.css";
+import "../src/components/TodoCard.jsx";
+import todoCard from "./components/TodoCard.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [todo, setTodo] = useState([]);
+    const [loading, setLoading] = useState();
+    const [error, setError] = useState();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        fetch("https://jsonplaceholder.typicode.com/todos")
+
+            .then((res) => res.json())
+
+            .then((data) => {
+                const updatedTodos = data.map((todo) => ({
+                    ...todo,
+                pinned: false,
+                    category: "Work",
+                }));
+                setTodos(updatedTodos);
+                setLoading(false);
+            })
+            .catch(() => {
+                setError("Failed to fetch todos.");
+                setLoading(false);
+            });
+    }, []);
+
+
+
+    return(
+        <div>
+            <h1>Todo App</h1>
+            {loading && <p>Loading...</p>}
+            {error && (
+                <div>
+                    {!loading &&
+                        !error &&
+                        todos.map((todo) => (
+                            <TodoCard key={todo.id} todo={todo} />
+                        ))}
+                    <p>{error}</p>
+                    <button onClick={() => window.location.reload()}>
+                        Retry
+                    </button>
+                </div>
+            )}
+
+
+
+        </div>
+    )
 }
+export default App;
 
-export default App
