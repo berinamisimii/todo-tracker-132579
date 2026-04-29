@@ -8,7 +8,11 @@ function TodoCard({ todo }) {
             <p>Completed: {todo.completed ? "Yes" : "No"}</p>
             <p>User ID: {todo.userId}</p>
             <p>Pinned: {todo.pinned ? "Yes" : "No"}</p>
-            <p>Category: {todo.category}</p>
+            <p>Category: {todo.completed === true && <p>completed</p>}
+                {
+                    todo.pinned === true && <p>pinned</p>
+                }
+            }</p>
         </div>
     );
 }
