@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 import "../src/components/TodoCard.jsx";
-import todoCard from "./components/TodoCard.jsx";
+import TodoCard from "../src/components/TodoCard.jsx"
+import RegisterTodo from "../src/components/RegisterTodo.jsx"
 
 function App() {
     const [todo, setTodo] = useState([]);
@@ -33,15 +34,15 @@ function App() {
     return(
         <div>
             <h1>Todo App</h1>
-            {loading && <p>Loading...</p>}
+            <p>Total todos: {totalCount}</p>{loading && <p>Loading...</p>}
             {error && (
                 <div>
                     {!loading &&
                         !error &&
                         todos.map((todo) => (
                             <TodoCard key={todo.id} todo={todo} />
-                        ))}
-                    <p>{error}</p>
+                        <RegisterTodo addTodo={addTodo} />
+            )}                    <p>{error}</p>
                     <button onClick={() => window.location.reload()}>
                         Retry
                     </button>

@@ -7,8 +7,11 @@ function RegisterTodo({ addTodo }) {
     const [pinned, setPinned] = useState(false);
     const [category, setCategory] = useState("Work");
     const [error, setError] = useState("");
+    const totalCount = useMemo(() => {
+        return todos.length;
+    }, [todos]);
 
-
+    const titleRef = useRef(null);
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -38,13 +41,16 @@ function RegisterTodo({ addTodo }) {
         setCompleted(false);
         setPinned(false);
         setCategory("Work");
-        setError("");
-
+        const addTodo = useCallback((newTodo) => {
+            setTodos((prev) => [...prev, newTodo]);
+        }, []);
+        titleRef.current.focus()
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <input
+                ref={titleRef}
                 type="text"
                 placeholder="yitle"
                 value={title}
